@@ -52,11 +52,12 @@ if (carouselInner) {
         carouselInner.appendChild(div)
       })
 
-      // Initialize the carousel without automatic sliding
+      // Initialize the carousel with only manual navigation
       new bootstrap.Carousel(carouselElement, {
-        pause: "hover", // Pause when user hovers, remove if not needed
-        wrap: true, // Allows cycling back to the first image after the last one
-        touch: true // Enables touch swipe navigation on mobile
+        interval: false, // No auto sliding
+        ride: false, // Completely manual
+        wrap: true, // Allows looping back to first image
+        touch: true // Enables swipe gestures
       })
     })
     .catch((error) => console.error("Error loading carousel images:", error))
