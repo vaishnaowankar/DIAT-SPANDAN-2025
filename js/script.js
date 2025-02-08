@@ -1,38 +1,66 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Image Carousel
-  const carouselElement = document.getElementById("imageCarousel")
-  const carouselInner = document.querySelector(".carousel-inner")
+//   // Image Carousel
+//   const carouselElement = document.getElementById("imageCarousel")
+//   const carouselInner = document.querySelector(".carousel-inner")
 
-  if (carouselInner) {
-    fetch("images/carousel/")
-      .then((response) => response.text())
-      .then((data) => {
-        const parser = new DOMParser()
-        const htmlDoc = parser.parseFromString(data, "text/html")
-        const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
-          .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
-          .map((link) => link.href)
+  // if (carouselInner) {
+  //   fetch("images/carousel/")
+  //     .then((response) => response.text())
+  //     .then((data) => {
+  //       const parser = new DOMParser()
+  //       const htmlDoc = parser.parseFromString(data, "text/html")
+  //       const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
+  //         .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
+  //         .map((link) => link.href)
 
-        imageLinks.forEach((src, index) => {
-          const div = document.createElement("div")
-          div.className = `carousel-item${index === 0 ? " active" : ""}`
-          div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
-          carouselInner.appendChild(div)
-        })
+  //       imageLinks.forEach((src, index) => {
+  //         const div = document.createElement("div")
+  //         div.className = `carousel-item${index === 0 ? " active" : ""}`
+  //         div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
+  //         carouselInner.appendChild(div)
+  //       })
 
-        // Initialize the carousel with automatic sliding
-        // Import Bootstrap here if not already imported globally
-        // Assuming Bootstrap is included via CDN, this line is not needed.  If using a different method, adjust accordingly.
-        // import * as bootstrap from 'bootstrap'; // Or the correct import path
+  //       // Initialize the carousel with automatic sliding
+  //       // Import Bootstrap here if not already imported globally
+  //       // Assuming Bootstrap is included via CDN, this line is not needed.  If using a different method, adjust accordingly.
+  //       // import * as bootstrap from 'bootstrap'; // Or the correct import path
 
-        new bootstrap.Carousel(carouselElement, {
-          interval: 2000, // Change slide every 3 seconds
-          ride: "carousel", // Enable automatic cycling
-        })
+  //       new bootstrap.Carousel(carouselElement, {
+  //         interval: 2000, // Change slide every 3 seconds
+  //         ride: "carousel", // Enable automatic cycling
+  //       })
+  //     })
+  //     .catch((error) => console.error("Error loading carousel images:", error))
+  // }
+const carouselElement = document.getElementById("imageCarousel")
+const carouselInner = document.querySelector(".carousel-inner")
+
+if (carouselInner) {
+  fetch("images/carousel/")
+    .then((response) => response.text())
+    .then((data) => {
+      const parser = new DOMParser()
+      const htmlDoc = parser.parseFromString(data, "text/html")
+      const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
+        .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
+        .map((link) => link.href)
+
+      imageLinks.forEach((src, index) => {
+        const div = document.createElement("div")
+        div.className = `carousel-item${index === 0 ? " active" : ""}`
+        div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
+        carouselInner.appendChild(div)
       })
-      .catch((error) => console.error("Error loading carousel images:", error))
-  }
 
+      // Initialize the carousel without automatic sliding
+      new bootstrap.Carousel(carouselElement, {
+        pause: "hover", // Pause when user hovers, remove if not needed
+        wrap: true, // Allows cycling back to the first image after the last one
+        touch: true // Enables touch swipe navigation on mobile
+      })
+    })
+    .catch((error) => console.error("Error loading carousel images:", error))
+}
   // Event Cards
   const culturalEvents = [
     {title: "Mr. & Miss DIAT", image: "images/Event-pics/mr-miss.jpg", voteLink: ""}, 
