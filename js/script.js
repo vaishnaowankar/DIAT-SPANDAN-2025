@@ -1,8 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Image Carousel
+  // const carouselElement = document.getElementById("imageCarousel")
+  // const carouselInner = document.querySelector(".carousel-inner")
+
+  // if (carouselInner) {
+  //   fetch("images/carousel/")
+  //     .then((response) => response.text())
+  //     .then((data) => {
+  //       const parser = new DOMParser()
+  //       const htmlDoc = parser.parseFromString(data, "text/html")
+  //       const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
+  //         .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
+  //         .map((link) => link.href)
+
+  //       imageLinks.forEach((src, index) => {
+  //         const div = document.createElement("div")
+  //         div.className = `carousel-item${index === 0 ? " active" : ""}`
+  //         div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
+  //         carouselInner.appendChild(div)
+  //       })
+
+  //       // Initialize the carousel with automatic sliding
+  //       // Import Bootstrap here if not already imported globally
+  //       // Assuming Bootstrap is included via CDN, this line is not needed.  If using a different method, adjust accordingly.
+  //       // import * as bootstrap from 'bootstrap'; // Or the correct import path
+
+  //       new bootstrap.Carousel(carouselElement, {
+  //         interval: 2000, // Change slide every 3 seconds
+  //         ride: "carousel", // Enable automatic cycling
+  //       })
+  //     })
+  //     .catch((error) => console.error("Error loading carousel images:", error))
+  // }
+
   const carouselElement = document.getElementById("imageCarousel")
   const carouselInner = document.querySelector(".carousel-inner")
-
+  
   if (carouselInner) {
     fetch("images/carousel/")
       .then((response) => response.text())
@@ -12,45 +45,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
           .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
           .map((link) => link.href)
-
+  
         imageLinks.forEach((src, index) => {
           const div = document.createElement("div")
           div.className = `carousel-item${index === 0 ? " active" : ""}`
           div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
           carouselInner.appendChild(div)
         })
-
-        // Initialize the carousel with automatic sliding
-        // Import Bootstrap here if not already imported globally
-        // Assuming Bootstrap is included via CDN, this line is not needed.  If using a different method, adjust accordingly.
-        // import * as bootstrap from 'bootstrap'; // Or the correct import path
-
+  
+        // Initialize the carousel with only manual navigation
         new bootstrap.Carousel(carouselElement, {
-          interval: 2000, // Change slide every 3 seconds
-          ride: "carousel", // Enable automatic cycling
+          interval: false, // No auto sliding
+          ride: false, // Completely manual
+          wrap: true, // Allows looping back to first image
+          touch: true // Enables swipe gestures
         })
       })
       .catch((error) => console.error("Error loading carousel images:", error))
   }
 
+
   // Event Cards
   const culturalEvents = [
-    {title: "Mr. & Miss DIAT", image: "images/Event-pics/mr-miss.jpg", voteLink: ""}, 
-    { title: "Dance Competition", image: "images/Event-pics/dance.jpeg", },
-    { title: "Singing", image: "images/Event-pics/sing.jpeg" },
-    { title: "Fashion Show", image: "images/Event-pics/fashion.jpg" },
-    { title: "Treasure Hunt", image: "images/Event-pics/treasure-hunt.jpg" },
-    { title: "Drama/Play", image: "images/Event-pics/drama.jpg" },
-    { title: "Rangoli", image: "images/Event-pics/rangoli.jpg" },
-    { title: "Short Film/Reels", image: "images/Event-pics/reels.jpg" },
-    { title: "Photography", image: "images/Event-pics/photography.jpg" },
+    {title: "Mr. & Miss DIAT", image: "images/Event-pics/mr-miss.jpg", voteLink: "", rulesLink: "assets/athletics-rules.pdf"}, 
+    { title: "Dance Competition", image: "images/Event-pics/dance.jpeg", rulesLink: "assets/dance-rules.pdf" },
+    { title: "Singing", image: "images/Event-pics/sing.jpeg", rulesLink: "assets/sing-rules.pdf" },
+    { title: "Fashion Show", image: "images/Event-pics/fashion.jpg", rulesLink: "assets/fashion-show.pdf" },
+    { title: "Treasure Hunt", image: "images/Event-pics/treasure-hunt.jpg", rulesLink: "assets/treasure-hunt-rules.pdf" },
+    { title: "Drama/Play", image: "images/Event-pics/drama.jpg", rulesLink: "assets/drama-rules.pdf" },
+    { title: "Rangoli", image: "images/Event-pics/rangoli.jpg", rulesLink: "assets/rangoli-rules.pdf" },
+    { title: "Short Film/Reels", image: "images/Event-pics/reels.jpg", rulesLink: "assets/short-film-rules.pdf" },
+    { title: "Photography", image: "images/Event-pics/photography.jpg", rulesLink: "assets/photography-rules.pdf" },
     { title: "Pot/T-Shirt/Face-Painting", image: "images/Event-pics/Face_painting.jpg" },
     { title: "Musical Chair", image: "images/Event-pics/musical-chair.png" },
     { title: "Antakshari", image: "images/Event-pics/antakshari.png" },
     { title: "Open Mic", image: "images/Event-pics/open-mic.jpg" },
     { title: "Story Writing", image: "images/Event-pics/story-writing.jpg" },
     { title: "Quiz", image: "images/Event-pics/quiz.jpg" },
-    { title: "Debate", image: "images/Event-pics/debate.png" },
+    { title: "Debate", image: "images/Event-pics/debate.png",rulesLink: "assets/debate-rules.pdf" },
     { title: "Essay writing", image: "images/Event-pics/essay-writing.png" },
     { title: "Logo design", image: "images/Event-pics/logo-design.png" },
     { title: "Drawing", image: "images/Event-pics/drawing.png" },
@@ -126,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 : ""
                             }
                             ${
-                              containerId === "sportsEvents"
+                              containerId === "sportsEvents" || containerId === "culturalEvents"
                                 ? `
                             <div class="d-grid gap-2 mt-3">
                                 <a href="${event.rulesLink}" target="_blank" class="btn btn-primary w-100">See the Rules!!</a>
@@ -204,4 +236,110 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("scoresTable")) {
     createScoresTable()
   }
+
+// Function to create and update the results page
+function updateResultsPage() {
+  const resultsData = [
+    {
+      date: "2025-02-12",
+      events: [
+        {
+          sport: "Cricket",
+          matches: [
+            {
+              match: "Electronics vs Materials",
+              score: "88/5 - 144/1",
+              result: "Materials won by 56 runs",
+            },
+            {
+              match: "CHEQTMATES vs Messenger",
+              score: "131/3 - 80/9",
+              result: "Cheqtmates won by 51 runs",
+            },
+          ],
+        },
+        // {
+        //   sport: "Basketball",
+        //   matches: [
+        //     {
+        //       match: "Team E vs Team F",
+        //       score: "78 - 75",
+        //       result: "Team E wins",
+        //     },
+        //   ],
+        // },
+      ],
+    },
+    // {
+    //   date: "2025-02-18",
+    //   events: [
+    //     {
+    //       sport: "Cricket",
+    //       matches: [
+    //         {
+    //           match: "Team G vs Team H",
+    //           score: "250/6 - 248/9",
+    //           result: "Team G wins by 2 runs",
+    //         },
+    //         {
+    //           match: "Team I vs Team J",
+    //           score: "180/8 - 182/3",
+    //           result: "Team J wins by 7 wickets",
+    //         },
+    //         {
+    //           match: "Team K vs Team L",
+    //           score: "220/7 - 221/5",
+    //           result: "Team L wins by 5 wickets",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+  ]
+
+  const resultsContainer = document.getElementById("resultsContainer")
+  if (resultsContainer) {
+    resultsContainer.innerHTML = "" // Clear existing content
+
+    resultsData.forEach((dateGroup) => {
+      const dateElement = document.createElement("h2")
+      dateElement.className = "result-date"
+      dateElement.textContent = new Date(dateGroup.date).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+      resultsContainer.appendChild(dateElement)
+
+      dateGroup.events.forEach((event) => {
+        const eventCard = document.createElement("div")
+        eventCard.className = "result-card"
+
+        const matchesHtml = event.matches
+          .map(
+            (match) => `
+          <div class="match-result">
+            <p><strong>Match:</strong> ${match.match}</p>
+            <p><strong>Score:</strong> ${match.score}</p>
+            <p class="result">${match.result}</p>
+          </div>
+        `,
+          )
+          .join("")
+
+        eventCard.innerHTML = `
+          <h3>${event.sport}</h3>
+          ${matchesHtml}
+        `
+        resultsContainer.appendChild(eventCard)
+      })
+    })
+  }
+}
+
+// Call updateResultsPage if on the results page
+if (document.querySelector(".results-page")) {
+  updateResultsPage()
+}
 })
