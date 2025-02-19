@@ -33,36 +33,33 @@ document.addEventListener("DOMContentLoaded", () => {
   //     .catch((error) => console.error("Error loading carousel images:", error))
   // }
 
-  const carouselElement = document.getElementById("imageCarousel")
-  const carouselInner = document.querySelector(".carousel-inner")
-  
-  if (carouselInner) {
-    fetch("images/carousel/")
-      .then((response) => response.text())
-      .then((data) => {
-        const parser = new DOMParser()
-        const htmlDoc = parser.parseFromString(data, "text/html")
-        const imageLinks = Array.from(htmlDoc.querySelectorAll("a"))
-          .filter((link) => link.href.match(/\.(jpe?g|png|gif)$/i))
-          .map((link) => link.href)
-  
-        imageLinks.forEach((src, index) => {
-          const div = document.createElement("div")
-          div.className = `carousel-item${index === 0 ? " active" : ""}`
-          div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`
-          carouselInner.appendChild(div)
-        })
-  
-        // Initialize the carousel with only manual navigation
-        new bootstrap.Carousel(carouselElement, {
-          interval: false, // No auto sliding
-          ride: false, // Completely manual
-          wrap: true, // Allows looping back to first image
-          touch: true // Enables swipe gestures
-        })
-      })
-      .catch((error) => console.error("Error loading carousel images:", error))
-  }
+ const carouselElement = document.getElementById("imageCarousel");
+const carouselInner = document.querySelector(".carousel-inner");
+
+if (carouselInner) {
+  fetch("/images.json") // Fetch the JSON file
+    .then((response) => response.json())
+    .then((data) => {
+      const imageLinks = data.images;
+
+      imageLinks.forEach((src, index) => {
+        const div = document.createElement("div");
+        div.className = `carousel-item${index === 0 ? " active" : ""}`;
+        div.innerHTML = `<img src="${src}" class="d-block w-100" alt="Carousel Image ${index + 1}">`;
+        carouselInner.appendChild(div);
+      });
+
+      // Initialize Bootstrap carousel manually (only on click)
+      new bootstrap.Carousel(carouselElement, {
+        interval: false, // No auto sliding
+        ride: false, // Fully manual
+        wrap: true, // Allows looping
+        touch: true // Swipe support
+      });
+    })
+    .catch((error) => console.error("Error loading carousel images:", error));
+}
+
 
 
   // Event Cards
